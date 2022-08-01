@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  db:
+    image: mariadb:10.7.3
+    restart: unless-stopped
+    volumes:
+      - ./mariadb/data/:/var/lib/mysql/
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=djangodb
+      - MYSQL_USER=django
+      - MYSQL_PASSWORD=secret
+      - TZ=Asia/Bangkok
+    command: ['mysqld', '--default-time-zone=+07:00']
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    command: php -S 0.0.0.0:8080 -t /var/www/html
+    restart: always
+    ports:
+      - 8080:8080
