@@ -2,13 +2,32 @@
 
 {% block content %}
 <div>
-    Application {{ title }}
+    <a href="{% url 'create'%}" class="btn btn-primary my-2">create</a>
     <div class="card">
         <div class="card-header">
             <strong>POST</strong>
         </div>
         <div class="card-body">
-            {{ post }}
+            <table class="table">
+                <thead>
+                    <th>author</th>
+                    <th>title</th>
+                    <th>content</th>
+                    <th>create at</th>
+                    <th>update at</th>
+                </thead>
+                <tbody>
+                    {% for row in post %}
+                    <tr>
+                        <td>{{ row.author }}</td>
+                        <td>{{ row.title }}</td>
+                        <td>{{ row.content }}</td>
+                        <td>{{ row.created }}</td>
+                        <td>{{ row.updated }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
