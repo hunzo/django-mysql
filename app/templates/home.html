@@ -2,7 +2,7 @@
 
 {% block content %}
 <div>
-    <a href="{% url 'create'%}" class="btn btn-primary my-2">create</a>
+    <a href="{% url 'create'%}" class="btn btn-primary my-4">create</a>
     <div class="card">
         <div class="card-header">
             <strong>POST</strong>
@@ -10,20 +10,33 @@
         <div class="card-body">
             <table class="table">
                 <thead>
+                    <th>id</th>
                     <th>author</th>
                     <th>title</th>
                     <th>content</th>
                     <th>create at</th>
                     <th>update at</th>
+                    <th>update</th>
+                    <th>delete</th>
                 </thead>
                 <tbody>
                     {% for row in post %}
-                    <tr>
+                    <tr class="align-middle">
+                        <td>{{ row.id }}</td>
                         <td>{{ row.author }}</td>
                         <td>{{ row.title }}</td>
                         <td>{{ row.content }}</td>
                         <td>{{ row.created }}</td>
                         <td>{{ row.updated }}</td>
+                        <td>
+                            <a href="{% url 'update' row.id %}" class="btn btn-secondary">update</a>
+                        </td>
+                        <td>
+                            <form action="{% url 'delete' row.id %}" method="post" name="delete-post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">delete</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

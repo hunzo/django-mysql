@@ -5,7 +5,7 @@ from .models import PostForm, Post
 
 def Home(request):
 
-    post = Post.objects.all()
+    post = Post.objects.all().order_by("-updated")
 
     context = {
         "title": "home",
@@ -14,7 +14,7 @@ def Home(request):
     return render(request, 'home.html', context)
 
 
-def Update(request):
+def Create(request):
 
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -25,7 +25,46 @@ def Update(request):
     form = PostForm()
 
     context = {
-        "title": "home",
+        "title": "create",
         "form": form
     }
-    return render(request, 'update.html', context)
+    return render(request, 'create.html', context)
+
+
+def Update(request, pk):
+    post = Post.objects.get(id=pk)
+    # print(request.POST)
+
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+        return redirect('update', pk)
+
+    form = PostForm(instance=post)
+
+    context = {
+        "title": "update",
+        "form": form
+    }
+    return render(request, "update.html", context)
+
+def Delete(request, pk):
+    post = Post.objects.get(id=pk)
+    print(pk)
+    print("delete")
+    print(request.POST)
+
+    if request.method == "POST":
+        print(post)
+        post.delete()
+
+        
+        return redirect("home")
+
+    context = {
+        "title": "home",
+        "post": post
+    }
+    return render(request, "home.html", context)
+
